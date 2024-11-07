@@ -1,0 +1,93 @@
+---
+title: 'Data 607: Week 9 TidyVerse/GitHub'
+author: Nakesha Fray
+output: html_document
+date: "2024-11-06"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+## Introdution
+
+For this week's assignment, I selected a dataset from fivethirtyeight to create a programming sample “vignette" which will demonstrates how to use one or more of the TidyVerse packages.
+
+The dataset I chose was about weather checking from the article: Where People Go To Check The Weather by Walt Hickey: https://fivethirtyeight.com/features/weather-forecast-news-app-habits/
+
+## Package: readr
+This is a tidyverse package that reads in csv. files into R. In this step, I am using readr to pull in the csv. raw file from GitHub.
+
+```{r readr}
+weather <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/refs/heads/master/weather-check/weather-check.csv")
+
+glimpse(weather)
+```
+
+This dataset has 928 observations and 9 variables. Each observation is a respondent. 
+
+## Package: dplyr
+
+Dplyr has many functions, but I will be using it to rename the columns to something shorter and easier to refer to later on and then select to create a ggplot.
+
+```{r rename}
+
+weather2 <- rename(weather, respondent_id = RespondentID,
+                check_weather = Do.you.typically.check.a.daily.weather.report.,
+                how_check_weather = How.do.you.typically.check.the.weather.,
+                weather_app_web = A.specific.website.or.app..please.provide.the.answer.,
+                likert_check_weather = If.you.had.a.smartwatch..like.the.soon.to.be.released.Apple.Watch...how.likely.or.unlikely.would.you.be.to.check.the.weather.on.that.device.,
+       gender = What.is.your.gender.,
+       household_income = How.much.total.combined.money.did.all.members.of.your.HOUSEHOLD.earn.last.year.,
+       us_region = US.Region                   
+       )
+
+weather2[weather2 == "-"] <- NA
+```
+
+```{r select}
+weather3 <- weather2 %>%
+  select(respondent_id, how_check_weather)
+```
+
+## Package: tidy
+
+Tidy also has many functions but I will be using it to drop NAs.
+
+```{r tidy}
+weather4 <- weather3 %>% drop_na()
+```
+
+## Package: dplyr
+
+Here we will go back to dplyr to use group_by and summarise to create a count of the variable: how people check the weather.
+
+```{r groupby_and_summarise}
+
+weather4$how_check_weather[weather4$how_check_weather == "A specific website or app (please provide the answer)"] <- "Other"
+
+weather5 <- weather4 %>%
+   group_by(how_check_weather) %>%
+  summarise(count = n())
+
+```
+
+## Package: ggplot2
+
+Ggplot2 has many functions for graphing different types graphs (e.g. histograms, box plots) with titles, labels, colors, and keys.
+
+```{r ggplot}
+
+ggplot(data=weather5, aes(x=how_check_weather, y=count)) +
+  geom_bar(stat="identity", fill="darkblue", position = "dodge")+
+  ggtitle("How Individuals Typically Check The Weather") +
+   ylab("Frequency") + xlab("Method of checking weather") +
+       theme(axis.text.x = element_text(angle=20, hjust=1))
+  
+```
+
+## Conclusion
+
+Tidyverse is a unique collection of packages useful for cleaning, tidying, manipulation, analysis, and visualization in a more efficient way - shown in my example above using a dataset about checking the weather.
