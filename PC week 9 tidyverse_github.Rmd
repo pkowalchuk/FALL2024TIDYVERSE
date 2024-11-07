@@ -1,0 +1,37 @@
+---
+title: "week 9 tidyver/github lab"
+author: "Chi Hang(Philip) Cheung"
+date: "2024-11-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## R Markdown
+
+Load data frame:
+```{r cars}
+url<- "https://raw.githubusercontent.com/stormwhale/data-mines/refs/heads/main/user_behavior_dataset.csv"
+data<- read.csv(url)
+```
+
+String detect two key words: "pixel" and "galaxy".
+data is piped into filter then combined with the function of str_detect to catch the desired character pattern.
+```{r}
+pi_gal<- data %>% 
+  filter(str_detect(Device.Model,
+                    regex("Pixel|Galaxy", ignore_case = TRUE)))
+head(pi_gal)
+```
+To use str_extract to extract only numbers from a column mixed with characters:
+"\\d+" is a regular expression for any digits
+mutate is used to create a column to store the extracted numbers
+```{r}
+phone_gen<- data %>% 
+  mutate(Phone_generation=str_extract(Device.Model, "\\d+")) %>% 
+  select(c(Device.Model, Phone_generation))
+head(phone_gen)
+```
