@@ -41,8 +41,16 @@ Data: https://github.com/fivethirtyeight/data/tree/master/alcohol-consumption
 =======
 Brandon Chung - Sample Vignette of TidyVerse package: dplyr. Examples of the functions Mutate(), Select(), Filter(), and Summarise(). 
   Data Used: https://www.kaggle.com/datasets/aayushmishra1512/faang-complete-stock-data?select=Google.csv
+
+
+-----------------------------
+Chi Hang (Philip) Cheung
+Data source: https://www.kaggle.com/datasets/valakhorasani/mobile-device-usage-and-user-behavior-dataset
+TidyVerse function: examples of string_detect and ggplot2
+=======
   
 =======
 Stephanie Chiang - `SC_vignette.md`
 Vignette: Dplyr's `rowwise()` and Custom Functions
 Using FiveThirtyEight's [Unisex Names dataset](https://github.com/fivethirtyeight/data/tree/master/unisex-names)
+
