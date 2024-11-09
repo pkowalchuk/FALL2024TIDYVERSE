@@ -37,20 +37,28 @@ The Tidyverse is an incredibly valuable collection of packages designed to enhan
 Andreina - Data set exploration with tidyverse. The data set was from fivethirtyeight, on alcohol consumptions in different countries from 2010. 
 Article: https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/
 
-Data: https://github.com/fivethirtyeight/data/tree/master/alcohol-consumption
+Data source: https://github.com/fivethirtyeight/data/tree/master/alcohol-consumption
 =======
+
 Brandon Chung - Sample Vignette of TidyVerse package: dplyr. Examples of the functions Mutate(), Select(), Filter(), and Summarise(). 
-  Data Used: https://www.kaggle.com/datasets/aayushmishra1512/faang-complete-stock-data?select=Google.csv
 
+Data source: https://www.kaggle.com/datasets/aayushmishra1512/faang-complete-stock-data?select=Google.csv
+=======
 
------------------------------
 Chi Hang (Philip) Cheung
 Data source: https://www.kaggle.com/datasets/valakhorasani/mobile-device-usage-and-user-behavior-dataset
 TidyVerse function: examples of string_detect and ggplot2
 =======
-  
-=======
+
 Stephanie Chiang - `SC_vignette.md`
 Vignette: Dplyr's `rowwise()` and Custom Functions
-Using FiveThirtyEight's [Unisex Names dataset](https://github.com/fivethirtyeight/data/tree/master/unisex-names)
+Data source: Using FiveThirtyEight's [Unisex Names dataset](https://github.com/fivethirtyeight/data/tree/master/unisex-names)
+=======
+
+Marco Castro
+Sample Vignette on map, map_df, map2, and pmap functions
+Package: Purrr
+Data source: https://www.kaggle.com/datasets/bhadramohit/agriculture-and-farming-dataset
+File: MC-Purrr-Vignette.Rmd
+=======
 
