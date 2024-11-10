@@ -62,3 +62,7 @@ Data source: https://www.kaggle.com/datasets/bhadramohit/agriculture-and-farming
 File: MC-Purrr-Vignette.Rmd
 =======
 
+Leslie Tavarez 
+Analysis of the World Happiness Report dataset using Tidyverse functions in R. 
+Data Source: https://www.kaggle.com/datasets/unsdsn/world-happiness
+=======
