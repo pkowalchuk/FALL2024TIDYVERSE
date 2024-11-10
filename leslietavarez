@@ -1,0 +1,97 @@
+## World Happiness Report Analysis
+
+This example demonstrates how to analyze the **World Happiness Report** dataset using the Tidyverse in R. The analysis focuses on the following columns:
+
+- **Country Name**
+- **Ladder Score** (Happiness Score)
+- **Social Support**
+- **Freedom to Make Life Choices**
+- **Generosity**
+- **Perceptions of Corruption**
+
+We explore relationships between happiness and factors like social support, generosity, and corruption.
+
+### Data Manipulation
+
+- Filtered countries with a happiness score greater than 7.
+- Created a new variable to categorize countries as **"Highly Generous"**.
+- Summarized average happiness scores based on generosity.
+
+### Visualizations
+
+The analysis includes the following visualizations:
+1. **Scatter plot**: Relationship between **Happiness Score** and **Social Support**.
+2. **Bar plot**: Average **Happiness Score** for highly generous countries vs others.
+3. **Correlation plot**: Pairwise relationships between happiness and other variables.
+
+Below is the code for data manipulation and visualization:
+
+```r
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+library(janitor)
+library(GGally)
+
+# Select relevant columns
+happiness_data_selected <- happiness_data %>%
+  select(
+    country_name, 
+    ladder_score, 
+    social_support, 
+    freedom_to_make_life_choices, 
+    generosity, 
+    perceptions_of_corruption
+  )
+
+# Clean column names using janitor
+happiness_data_selected <- happiness_data_selected %>%
+  clean_names()
+
+# Filter countries with a happiness score greater than 7
+high_happiness <- happiness_data_selected %>%
+  filter(ladder_score > 7)
+
+# Create a new variable indicating if a country is 'highly generous'
+median_generosity <- median(happiness_data_selected$generosity, na.rm = TRUE)
+
+happiness_data_selected <- happiness_data_selected %>%
+  mutate(high_generosity = ifelse(generosity > median_generosity, "Yes", "No"))
+
+# Summarize the data by generosity category
+generosity_summary <- happiness_data_selected %>%
+  group_by(high_generosity) %>%
+  summarise(
+    avg_happiness = mean(ladder_score, na.rm = TRUE),
+    avg_social_support = mean(social_support, na.rm = TRUE)
+  )
+
+# Visualizations
+
+# 1. Scatter plot of Happiness Score vs. Social Support
+ggplot(happiness_data_selected, aes(x = social_support, y = ladder_score)) +
+  geom_point(aes(color = high_generosity), alpha = 0.6) +
+  labs(
+    title = "Happiness Score vs. Social Support",
+    x = "Social Support",
+    y = "Happiness Score"
+  ) +
+  theme_minimal() +
+  scale_color_manual(values = c("Yes" = "blue", "No" = "red"))
+
+# 2. Bar plot of average happiness by generosity
+ggplot(generosity_summary, aes(x = high_generosity, y = avg_happiness, fill = high_generosity)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  labs(
+    title = "Average Happiness Score by Generosity",
+    x = "High Generosity",
+    y = "Average Happiness Score"
+  ) +
+  scale_fill_manual(values = c("Yes" = "blue", "No" = "red")) +
+  theme_minimal()
+
+# 3. Correlation plot
+correlation_data <- happiness_data_selected %>%
+  select(ladder_score, social_support, generosity, perceptions_of_corruption,freedom_to_make_life_choices)
+
+ggpairs(correlation_data)
