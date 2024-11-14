@@ -62,3 +62,5 @@ Data source: https://www.kaggle.com/datasets/bhadramohit/agriculture-and-farming
 File: MC-Purrr-Vignette.Rmd
 =======
 
+Nakesha Fray: Vignette of tidyverse using readr, tidy, dplyr, and ggplot. Data Source: Where People Go To Check The Weather by Walt Hickey: https://fivethirtyeight.com/features/weather-forecast-news-app-habits/
+
