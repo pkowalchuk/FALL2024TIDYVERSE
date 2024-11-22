@@ -48,6 +48,7 @@ Data source: https://www.kaggle.com/datasets/aayushmishra1512/faang-complete-sto
 Chi Hang (Philip) Cheung
 Data source: https://www.kaggle.com/datasets/valakhorasani/mobile-device-usage-and-user-behavior-dataset
 TidyVerse function: examples of string_detect and ggplot2
+Extended by Inna Yedzinovich
 =======
 
 Stephanie Chiang - `SC_vignette.md`
