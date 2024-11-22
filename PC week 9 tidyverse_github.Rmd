@@ -1,6 +1,6 @@
 ---
 title: "week 9 tidyver/github lab"
-author: "Chi Hang(Philip) Cheung"
+author: "Chi Hang(Philip) Cheung, updatd by Inna Yedzinovich"
 date: "2024-11-07"
 output: html_document
 ---
@@ -21,6 +21,7 @@ data<- read.csv(url)
 String detect two key words: "pixel" and "galaxy".
 data is piped into filter then combined with the function of str_detect to catch the desired character pattern.
 ```{r}
+
 pi_gal<- data %>% 
   filter(str_detect(Device.Model,
                     regex("Pixel|Galaxy", ignore_case = TRUE)))
@@ -29,9 +30,19 @@ head(pi_gal)
 To use str_extract to extract only numbers from a column mixed with characters:
 "\\d+" is a regular expression for any digits
 mutate is used to create a column to store the extracted numbers
+
 ```{r}
 phone_gen<- data %>% 
   mutate(Phone_generation=str_extract(Device.Model, "\\d+")) %>% 
   select(c(Device.Model, Phone_generation))
 head(phone_gen)
+```
+Now we extract phone generation and remove duplicates: 
+```{r}
+phone_gen <- phone_gen %>%
+  mutate(Phone_generation = str_extract(Device.Model, "\\d+")) %>%
+  group_by(Device.Model, Phone_generation) %>%
+  summarise(Duplicate_Count = n(), .groups = 'drop')
+head(phone_gen)
+
 ```
