@@ -1,0 +1,89 @@
+---
+Title: TidyVerse
+Author: Ariba 
+---
+
+
+
+```{r}
+# Load the necessary libraries
+library(tidyverse)
+
+# Load the dataset (assuming you've downloaded and saved it as 'train.csv')
+house_data <- read_csv("/Users/aribarazzaq/Desktop/house-prices-advanced-regression-techniques/train.csv")
+
+# View the first few rows to understand the data structure
+head(house_data)
+
+
+```
+
+```{r}
+# Select relevant columns for analysis (e.g., SalePrice, GrLivArea, YearBuilt, OverallQual)
+house_data <- house_data %>%
+  select(SalePrice, GrLivArea, YearBuilt, OverallQual, Neighborhood, LotArea)
+
+# Clean and transform data
+# For example, removing outliers based on the SalePrice (houses over $500,000) for simplicity
+house_data <- house_data %>%
+  filter(SalePrice < 500000)
+
+# View summary statistics
+summary(house_data)
+
+```
+
+```{r}
+# Calculate the average sale price for each neighborhood
+avg_price_neighborhood <- house_data %>%
+  group_by(Neighborhood) %>%
+  summarize(avg_price = mean(SalePrice, na.rm = TRUE),
+            median_lot_area = median(LotArea, na.rm = TRUE)) %>%
+  arrange(desc(avg_price))
+
+# Display the top 5 neighborhoods with the highest average price
+head(avg_price_neighborhood, 5)
+
+```
+
+```{r}
+# Plot Sale Price against Ground Living Area
+ggplot(house_data, aes(x = GrLivArea, y = SalePrice)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", color = "blue", se = FALSE) +
+  labs(
+    title = "House Sale Price vs. Ground Living Area",
+    x = "Ground Living Area (Square Feet)",
+    y = "Sale Price (USD)"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+# Bar plot of average sale price by neighborhood
+ggplot(avg_price_neighborhood, aes(x = reorder(Neighborhood, avg_price), y = avg_price)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "Average House Sale Price by Neighborhood",
+    x = "Neighborhood",
+    y = "Average Sale Price (USD)"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+# Boxplot to show sale price distribution by overall quality
+ggplot(house_data, aes(x = as.factor(OverallQual), y = SalePrice)) +
+  geom_boxplot(fill = "lightgreen") +
+  labs(
+    title = "House Sale Price by Overall Quality",
+    x = "Overall Quality",
+    y = "Sale Price (USD)"
+  ) +
+  theme_minimal()
+
+```
+
