@@ -164,3 +164,48 @@ farm_data_lms[[3]][1]
 The Purrr dataset is a great alternative to using _for_ loops. One advantage is more human-friendly syntax that compresses multiple lines of code into an easier to ready format. 
 
 This tutorial only covers some of the most common functions of the _Purrr_ package, but the package includes many more promising tools to make your R programming more efficient, including _walk_, _modify_ and other _map_ variants like _imap_ and _map_if_. For more information, visit the [Purrr documentation](https://purrr.tidyverse.org/reference/map.html) or review the [Posit Purrr Cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/purrr.pdf).
+
+
+## Vignette Extention by Brandon Chung
+
+Using other Purrr package tools: modify() and modify_if()
+
+The modify function is a pillar in data tidying, as it allows the user to manipulate a column's elements as it is in the current data frame without creating a new column then having to remove the old.
+
+
+```{r}
+# Using modify to convert kg to lb in the farm_data
+
+head(farm_data$pesticide_used_kg)
+
+```
+```{r}
+# Here we modify a specific column by applying the function .X (list/vector) multiplied by 2.2.
+farm_data$pesticide_used_kg <- modify(farm_data$pesticide_used_kg, ~ .x * 2.2)
+
+# Renaming the modified column to reflect the result of the computation
+farm_data <- farm_data %>% 
+  rename(pesticide_used_lb = pesticide_used_kg)
+
+head(farm_data$pesticide_used_lb)
+```
+
+The modify_if function is used similarly to map/modify, where we are applying a function to elements in a list or vector, but with modify_if we are using a specified condition.
+
+For our farm_data data frame I want to use modify_if to convert our number vectors into integers.
+
+```{r}
+# Modifying the farm_data 
+farm_data.int <- farm_data %>%
+  modify_if(is.numeric, as.integer)
+```
+Arguements:
+
+modify_if(.x, .p, .f, ..., .else = NULL)
+
+The arguements for modify_if is similar to modify where .x is a list or vector, .p is a arguement where .p will evaluate to TRUE or FALSE, and .else is the function to apply to which .p applied to .x is FALSE.
+
+## Conclusion
+
+The Purrr package modify and modify_if functions are amazing for cleaning / manipulating datasets because they apply the specified functions directly to the data set. These functions make data manipulations more efficient.
+
