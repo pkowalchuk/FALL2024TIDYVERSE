@@ -1,6 +1,6 @@
 ---
 title: "week 9 tidyver/github lab"
-author: "Chi Hang(Philip) Cheung, updatd by Inna Yedzinovich"
+author: "Chi Hang(Philip) Cheung, updatd by Inna Yedzinovich and Yanyi Li"
 date: "2024-11-07"
 output: html_document
 ---
