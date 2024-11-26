@@ -47,6 +47,9 @@ head(phone_gen)
 
 ```
 
+----------------------------------------------------------------------------------------------------------------------------
+(Extended by Yanyi Li 11/26/2024)
+
 We can use the ggplot2 package to create plots for the data frame above. One example is a bar graph for the duplicate counts.
 ```{r}
 ggplot(data = phone_gen, aes(x = Device.Model, y = Duplicate_Count, fill = Device.Model)) +
