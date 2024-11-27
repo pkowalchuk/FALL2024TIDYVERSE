@@ -69,3 +69,9 @@ Nakesha Fray: Vignette of tidyverse using readr, tidy, dplyr, and ggplot. Data S
 Ariba Mandavia: This vignette provides a comprehensive example of using dplyr for data manipulation and ggplot2 for data visualization with a real-world dataset!
 Data Source: https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data
 =======
+
+Erick Hadi
+Tidyverse: How to do simple data analysis using Tidyverse.
+Data: https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset/data
+
+=======
