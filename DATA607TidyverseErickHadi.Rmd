@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Introduction - The Tidyverse
 The Tidyverse is a collection of R packages designed for Data Science. It aims to provide a consistent set of tools and data structures that work together to streamline the data science workflow. 
 
-The Tidyerse was developed by Hadley Wickham and others. Tidyverse includes several packages and many add-on packages. The core tidyverse includes serveral key packages such as:
+The Tidyerse was developed by Hadley Wickham and others. Tidyverse includes several packages and many add-on packages. The core tidyverse includes serveral key packages such as: 
 
 1. dplyr
 2. ggplot2

@@ -72,6 +72,6 @@ Data Source: https://www.kaggle.com/competitions/house-prices-advanced-regressio
 
 Erick Hadi
 Tidyverse: How to do simple data analysis using Tidyverse.
-Data: https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset/data
+Data: https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset/data 
 
 =======
