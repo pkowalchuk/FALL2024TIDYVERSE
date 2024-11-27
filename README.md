@@ -41,7 +41,6 @@ Data source: https://github.com/fivethirtyeight/data/tree/master/alcohol-consump
 =======
 
 Brandon Chung - Sample Vignette of TidyVerse package: dplyr. Examples of the functions Mutate(), Select(), Filter(), and Summarise(). 
-
 Data source: https://www.kaggle.com/datasets/aayushmishra1512/faang-complete-stock-data?select=Google.csv
 =======
 
@@ -61,6 +60,7 @@ Sample Vignette on map, map_df, map2, and pmap functions
 Package: Purrr
 Data source: https://www.kaggle.com/datasets/bhadramohit/agriculture-and-farming-dataset
 File: MC-Purrr-Vignette.Rmd
+Extended by Brandon Chung (modify and modify_if)
 =======
 
 Nakesha Fray: Vignette of tidyverse using readr, tidy, dplyr, and ggplot. Data Source: Where People Go To Check The Weather by Walt Hickey: https://fivethirtyeight.com/features/weather-forecast-news-app-habits/
