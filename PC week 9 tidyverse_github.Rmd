@@ -1,6 +1,6 @@
 ---
 title: "week 9 tidyver/github lab"
-author: "Chi Hang(Philip) Cheung, updatd by Inna Yedzinovich"
+author: "Chi Hang(Philip) Cheung, updatd by Inna Yedzinovich and Yanyi Li"
 date: "2024-11-07"
 output: html_document
 ---
@@ -46,3 +46,15 @@ phone_gen <- phone_gen %>%
 head(phone_gen)
 
 ```
+
+----------------------------------------------------------------------------------------------------------------------------
+(Extended by Yanyi Li 11/26/2024)
+
+We can use the ggplot2 package to create plots for the data frame above. One example is a bar graph for the duplicate counts.
+```{r}
+ggplot(data = phone_gen, aes(x = Device.Model, y = Duplicate_Count, fill = Device.Model)) +
+  geom_bar(stat = "identity", width = 0.7) + 
+  theme(axis.text.x = element_text(angle = 15))
+```
+
+The ggplot package is extremely useful for creating and customizing plots. In the graph above, I adjusted the bar width to 0.7 to create more space between the bars. Additionally, I assigned a different color to each bar to enhance the visual appeal. To improve the readability of long x-axis labels, I tilted them at a 15-degree angle.
