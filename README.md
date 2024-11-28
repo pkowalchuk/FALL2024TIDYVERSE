@@ -70,8 +70,15 @@ Ariba Mandavia: This vignette provides a comprehensive example of using dplyr fo
 Data Source: https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data
 =======
 
+
 Erick Hadi
 Tidyverse: How to do simple data analysis using Tidyverse.
 Data: https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset/data 
-
 =======
+
+Shri Tripathi
+Data source: https://github.com/Shriyanshh/Week-9-TidyVerse-GitHub-CREATE-assignment/blob/main/HappinessAlcoholConsumption.csv
+https://www.kaggle.com/datasets/marcospessotto/happiness-and-alcohol-consumption
+TidyVerse function: dplyr, tidyr, ggplot2
+=======
+
