@@ -1,0 +1,251 @@
+---
+title: "TidyVerse-GitHub EXTEND"
+author: "Zaneta Paulusova"
+date: 
+output: html_document
+---
+---
+title: "DATA607TidyverseErickHadi"
+author: "Erick Hadi"
+date: "2024-11-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction - The Tidyverse
+The Tidyverse is a collection of R packages designed for Data Science. It aims to provide a consistent set of tools and data structures that work together to streamline the data science workflow. 
+
+The Tidyerse was developed by Hadley Wickham and others. Tidyverse includes several packages and many add-on packages. The core tidyverse includes serveral key packages such as: 
+
+1. dplyr
+2. ggplot2
+3. forcats
+4. tibble
+5. readr
+6. stringr 
+7. tidyr
+8. purrr
+
+## Installing and Loading the Tidyverse
+In order to use the Tidyverse
+
+Install the package:
+install.packages("tidyverse")
+
+Then load it into your r code
+
+```{r}
+library(tidyverse)
+```
+
+This should load all the core tidyverse packages into your R session
+
+## Using the Tidyverse: 
+
+First lets load the sample data from kaggle 
+https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset/data
+
+To do this we can utilize a readr function **read_csv()** to load a csv file into a dataframe.
+
+```{r}
+data <- read_csv("shopping_trends.csv")
+head(data)
+```
+
+
+The original data read formula does not work. So I need to downlaoded and I updaled it to Github to be able to review data.
+```{r}
+data <- read_csv("https://raw.githubusercontent.com/ZanetaP02/FALL2024TIDYVERSE/refs/heads/main/shopping_trends.csv")
+head(data)
+```
+
+
+In order to get information about this dataset we can use a dplyr function called
+**glimpse()**
+
+```{r}
+glimpse(data)
+```
+By using glimpse we can take a look at the number of rows, columns, variable types, and take a look at the data in a long format.
+
+Now let's say we want to modify the names each of the columns.
+
+```{r}
+colnames(data)
+```
+We can use another dpyler function **rename()** to change the names of all of the columns.
+
+```{r}
+data <- data %>% 
+  rename("Customer_ID" = "Customer ID",
+  "Age" = "Age",
+  "Gender" = "Gender",
+  "Item_Purchased" = "Item Purchased",
+  "Category" = "Category",
+  "Purchase_Amount" = "Purchase Amount (USD)",
+  "Size" = "Size",
+  "Color" = "Color",
+  "Season" = "Season",
+  "Review_Rating" = "Review Rating",
+  "Subscription" = "Subscription Status",
+  "Payment_Method" = "Payment Method",
+  "Shipping_Type" = "Shipping Type",
+  "Discount_Applied" = "Discount Applied",
+  "Promo_Code" = "Promo Code Used",
+  "Previous_Purchases" = "Previous Purchases",
+  "Preferred_Payment_Method" = "Preferred Payment Method",
+  "Frequency_of_Purchases" = "Frequency of Purchases")
+
+colnames(data)
+```
+Now let's say we want to perform data analysis we should first tidy our dataset and keep only relevant information.
+
+We can create a new data frame and keep only relevant categories relevant to our analysis by using a set dpylr functions 
+
+**select()** to select only the desired categories for our tidied dataframe 
+
+**mutate()** to keep only a specific age range 20 - 30
+
+**filter()** to filter out any na values
+
+```{r}
+tidy_data <- data %>%
+  select(Customer_ID, Age, Purchase_Amount, Location, Preferred_Payment_Method) %>%
+  mutate(Age = ifelse(Age >= 20 & Age <= 30, Age, NA)) %>%
+  filter(!is.na(Age))
+
+glimpse(tidy_data)
+```
+```{r}
+payment_counts <- tidy_data %>%
+  select(Preferred_Payment_Method) %>%
+  count(Preferred_Payment_Method) %>%
+  rename(count = n)
+
+glimpse(payment_counts)
+```
+Lets say we want to also do some kind of staistical analysis and see which states have the most amount of total purchases. We can utilize:
+
+**group_by()** to group the data by the Location column
+
+**summarise()** to get the total amount purchased based on the grouped data
+
+This allows us to create a dataframe with the location and total purchase amount by each location
+
+```{r}
+location_sums <- tidy_data %>%
+  group_by(Location) %>%
+  summarise(total_purchase = sum(Purchase_Amount))
+
+sorted_df <- location_sums[order(-location_sums$total_purchase), ]
+
+top_locations <- head(sorted_df, 10)
+
+print(top_locations)
+```
+
+
+For our analysis we can use ggplot2 to create visualizations.
+
+**ggplot()** is the main function in ggplot2 that initializes a plot object. It consists of three main parts:
+
+1.Data Layer:
+You specify the dataset you want to plot using the data argument 2.
+Example: ggplot(data = data)
+
+2.Aesthetic Mapping:
+You map variables in your dataset to visual aesthetics like x-axis, y-axis, color, etc 2.
+Example: aes(x = Age, y = Purchase_Amount)
+
+3.Geometric Layer:
+You specify how to visualize the data using geometric objects like points, lines, bars etc 2.
+Example: geom_point()
+
+Lets make 3 visualizations for the three data frames we created 
+
+Scatter plot of purchase amount by age (20-30 years old)
+**geom_point()**
+
+```{r}
+ggplot(tidy_data, aes(x = Age, y = Purchase_Amount)) +
+  geom_point() +
+  labs(title = "Purchase Amount vs Age (20-30)", x = "Age", y = "Purchase Amount") + theme_minimal()
+```
+
+Bar plot of preferred payment method counts
+**geom_bar()**
+
+```{r}
+ggplot(payment_counts, aes(x = Preferred_Payment_Method, y = count)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Preferred Payment Method Counts", x = "Method", y = "Count") +
+  theme_minimal()
+```
+
+Horizontal bar plot to show top ten location by total purchase amount
+**geom_col()**
+
+```{r}
+ggplot(top_locations, aes(x = reorder(Location, total_purchase), y = total_purchase)) +
+  geom_col(fill = "lightblue") +
+  labs(title = "Top Ten Locations by Total Purchase Amount", x = "Location", y = "Total Purchase Amount") +
+  coord_flip() +
+  theme_minimal()
+```
+
+## Conclusions
+In conclusion we were able to utilize the Tidyverse package to do a simple data analysis on a customer shopping dataset. Using the various packages we were able to load, inspect, tidy, and visualize our data. We loaded the dataset and inspect the data by retrieving the information. We then renamed some of the column names. We also created a tidy dataframe by removing unnecessary variables and created three new dataframes. We finally analyzed the data by creating three visualizations. This vignette showcases some of the potential use cases of some of the capabilities of the Tidyverse package.
+
+
+
+
+### Adding Code
+
+List of all the columns in the data
+```{r}
+print(colnames(data))
+```
+###Summary of the Original Data
+```{r}
+summary(data)
+```
+
+### Count of previous purchated by ItemItem & Gender
+```{r}
+pre_data <- data %>% group_by(Item_Purchased, Gender,Age, Season) %>% 
+  summarise(Previous_Purchases = sum(Previous_Purchases))
+pre_data
+```
+
+```{r}
+ggplot((p_data=pre_data), aes(x = Item_Purchased, y = Previous_Purchases)) + geom_col(position = position_dodge())+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+```
+
+
+```{r}
+ggplot((p_data=pre_data), aes(x = Item_Purchased, y = Previous_Purchases, fill = Gender)) + geom_col(position = position_dodge())+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+```
+From the graph, it is evident that males are the highest purchasers across all different items. I would have expected that females would have highest purchase on some of the items, but that doesn't seem to be the case. This could suggest that males are paying for the purchases made by females. As I don't think that alot of males buy skirts for them self. One point I agree with is that males have the highest purchases in jewelry.
+
+
+```{r}
+ggplot((p_data=pre_data), aes(x = Age, y = Previous_Purchases, fill = Gender)) + geom_col(position = position_dodge())+
+  theme(axis.text.x = element_text(angle = 1, hjust = .5))
+```
+
+```{r}
+pe_data <- data %>% group_by(Season) %>% 
+  summarise(Previous_Purchases = sum(Previous_Purchases))
+pe_data
+```
+
+```{r}
+ggplot((p_data=pe_data), aes(x = Season, y = Previous_Purchases)) + geom_col(position = position_dodge())+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))
+```
+I believe the peak purchasing season is winter, driven by holiday sales like Black Friday and Cyber Monday, which is reflected in the graph above. Spring follows closely behind.
