@@ -36,7 +36,7 @@ The Tidyverse is an incredibly valuable collection of packages designed to enhan
 
 Andreina - Data set exploration with tidyverse. The data set was from fivethirtyeight, on alcohol consumptions in different countries from 2010. 
 Article: https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/
-
+Extended by Marco Castro to include  `group_by`, `mutate`, `ungroup` and `separate_wider_delim`
 Data source: https://github.com/fivethirtyeight/data/tree/master/alcohol-consumption
 =======
 

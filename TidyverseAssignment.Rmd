@@ -1,6 +1,6 @@
 ---
 title: "Assignment_tidyverse_updated"
-author: "Andreina A"
+author: "Andreina A, extended by Marco Castro"
 date: "2024-11-02"
 output: html_document
 ---
