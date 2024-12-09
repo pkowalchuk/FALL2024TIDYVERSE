@@ -83,3 +83,10 @@ https://www.kaggle.com/datasets/marcospessotto/happiness-and-alcohol-consumption
 TidyVerse function: dplyr, tidyr, ggplot2
 =======
 
+Ariba Mandavia: 
+## Extended Examples
+
+- Extended Chi Hang(Philip) Cheung's example to include:
+  - A summary and visualization of phone generations extracted from `Device.Model`.
+  - A keyword-based analysis and visualization of devices containing "Pixel" or "Galaxy".
+=======
