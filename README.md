@@ -36,7 +36,7 @@ The Tidyverse is an incredibly valuable collection of packages designed to enhan
 
 Andreina - Data set exploration with tidyverse. The data set was from fivethirtyeight, on alcohol consumptions in different countries from 2010. 
 Article: https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/
-
+Extended by Marco Castro to include  `group_by`, `mutate`, `ungroup` and `separate_wider_delim`
 Data source: https://github.com/fivethirtyeight/data/tree/master/alcohol-consumption
 =======
 
@@ -71,10 +71,16 @@ Data Source: https://www.kaggle.com/competitions/house-prices-advanced-regressio
 Extended by Shri Tripathi
 =======
 
+
 Erick Hadi
 Tidyverse: How to do simple data analysis using Tidyverse.
 Data: https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset/data 
+=======
 
+Shri Tripathi
+Data source: https://github.com/Shriyanshh/Week-9-TidyVerse-GitHub-CREATE-assignment/blob/main/HappinessAlcoholConsumption.csv
+https://www.kaggle.com/datasets/marcospessotto/happiness-and-alcohol-consumption
+TidyVerse function: dplyr, tidyr, ggplot2
 =======
 
 Ariba Mandavia: 
@@ -83,3 +89,4 @@ Ariba Mandavia:
 - Extended Chi Hang(Philip) Cheung's example to include:
   - A summary and visualization of phone generations extracted from `Device.Model`.
   - A keyword-based analysis and visualization of devices containing "Pixel" or "Galaxy".
+=======
