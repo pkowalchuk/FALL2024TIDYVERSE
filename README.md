@@ -71,8 +71,15 @@ Data Source: https://www.kaggle.com/competitions/house-prices-advanced-regressio
 Extended by Shri Tripathi
 =======
 
+
 Erick Hadi
 Tidyverse: How to do simple data analysis using Tidyverse.
 Data: https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset/data 
-
 =======
+
+Shri Tripathi
+Data source: https://github.com/Shriyanshh/Week-9-TidyVerse-GitHub-CREATE-assignment/blob/main/HappinessAlcoholConsumption.csv
+https://www.kaggle.com/datasets/marcospessotto/happiness-and-alcohol-consumption
+TidyVerse function: dplyr, tidyr, ggplot2
+=======
+
