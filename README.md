@@ -76,3 +76,10 @@ Tidyverse: How to do simple data analysis using Tidyverse.
 Data: https://www.kaggle.com/datasets/bhadramohit/customer-shopping-latest-trends-dataset/data 
 
 =======
+
+Ariba Mandavia: 
+## Extended Examples
+
+- Extended Chi Hang(Philip) Cheung's example to include:
+  - A summary and visualization of phone generations extracted from `Device.Model`.
+  - A keyword-based analysis and visualization of devices containing "Pixel" or "Galaxy".
