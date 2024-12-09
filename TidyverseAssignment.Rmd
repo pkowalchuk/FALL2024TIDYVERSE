@@ -5,22 +5,13 @@ date: "2024-11-02"
 output: html_document
 ---
 
-Your task here is to Create an Example.  Using one or more TidyVerse packages, and any dataset from fivethirtyeight.com or Kaggle, create a programming sample “vignette” that demonstrates how to use one or more of the capabilities of the selected TidyVerse package with your selected dataset.(25 points)
-
-Later, you'll be asked to extend an existing vignette.  Using one of your classmate’s examples (as created above), you'll then extend his or her example with additional annotated code. (15 points)
-
-You should clone the provided repository.  Once you have code to submit, you should make a pull request on the shared repository.  You should also update the README.md file with your example.
-
-After you’ve created your vignette, please submit your GitHub handle name in the submission link provided below. This will let your instructor know that your work is ready to be peer-graded.
-
-You should complete your submission on the schedule stated in the course syllabus.
 
 ```{r}
 library(tidyverse)
 ```
 
 
-**The data I used for this assignment was from fivethirtyeight and it's on the alcohol consumption from different countries in 2010. To load the data I used read.csv, since the file is a csv in github. Read.csv is from the readr library which is also in the tidyverse package. The glimpse function is from the tibble library from tyverse, that is used to view the data set and get informaiton on the ammount of rows and columns. This data set has 193 rows and 5 columns.**
+**The data I used for this assignment was from fivethirtyeight and it's on the alcohol consumption from different countries in 2010. To load the data I used read.csv, since the file is a csv in github. Read.csv is from the readr library which is also in the tidyverse package. The glimpse function is from the `tibble` library from tidyverse, that is used to view the data set and get information on the amount of rows and columns. This data set has 193 rows and 5 columns.**
 
 
 Article: https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/
@@ -28,33 +19,65 @@ Article: https://fivethirtyeight.com/features/dear-mona-followup-where-do-people
 Data: https://github.com/fivethirtyeight/data/tree/master/alcohol-consumption
 
 ```{r}
-DF1<-read.csv('https://raw.githubusercontent.com/fivethirtyeight/data/refs/heads/master/alcohol-consumption/drinks.csv')
+DF1 <- read.csv('https://raw.githubusercontent.com/fivethirtyeight/data/refs/heads/master/alcohol-consumption/drinks.csv')
 glimpse(DF1)
 ```
 
-**From the tidyr library in tidyverse, pivot_longer function can be used to reshape the data frame by collapsing four coulumns into two columns, resulting into a lengthen data frame.**
+From tidyverse's __tidyr__ library, the `pivot_longer` function can be used to reshape the data frame by collapsing four columns into two columns, resulting into a lengthen data frame.
 
 ```{r echo=FALSE}
 DF1<-data.frame(DF1%>%
   pivot_longer(c(beer_servings, spirit_servings, wine_servings,total_litres_of_pure_alcohol), names_to = 'alcohol_type_of_serving', values_to = 'serving_amount'))
 head(DF1)
 ```
-**drop_na is a function from tidyr that drops missing vaules and trues the values into floats.**
+**`drop_na` is a function from __tidyr__ that drops missing values and trues the values into floats.**
 
 ```{r echo=FALSE}
 head(drop_na(DF1,serving_amount))
 ```
 
 
+The `ggplot` library from tidyverse is used to plot data sets. We can use the `filter` function to only display data for serving amount that are greater than or equal to 347.
 
-**ggplot function is also from tidyverse used to plot data sets, as well the filter function which I used to only display data for serving amount that are greater than or equal to 347.**
-
-```{r}
-DF1<-filter(DF1,serving_amount>=347)
-ggplot(DF1, aes(x=country, y=serving_amount, fill=alcohol_type_of_serving)) +
+```{r ggplot-ex}
+DF2 <- DF1 |>
+  filter(serving_amount>=347)
+ggplot(DF2, aes(x=country, y=serving_amount, fill=alcohol_type_of_serving)) +
   geom_col(position="dodge")
 ```
 
+In addition to `filter` function, __dplyr__ contains many other helpful functions. In the example below, we used `group_by` to group our data by _alcohol_type_of_serving_, use `mutate`, another __dplyr__ function to add a column of the average serving amount per alcohol type, then `ungroup` to be able to use access the value in the new column from within our original rows. In the the example below, we use mutate again to add another column (_pct_above_avg_) for the number of times above the average serving amount for each country.
+
+```{r group example}
+
+DF3 <- DF1 |>
+  filter(alcohol_type_of_serving != 'total_litres_of_pure_alcohol') |>
+  group_by(alcohol_type_of_serving) |>
+  mutate(
+    avg_serving_amount = mean(serving_amount)
+  ) |>
+  ungroup() |>
+  mutate(
+    pct_above_avg = floor(serving_amount/avg_serving_amount),
+  ) 
+```
+
+ We also used the __tidyr__ `separate_wider_delim` function to split the _alcohol_type_of_serving_ column into two columns, using "_" as a delimiter. We dropped the _right_ column created. Next, we used the __dplyr__ `select` function to select which columns we want to keep in our dataframe. In this example, we used the flag `-` to specify that we should drop the columns in the list. Finally, we filtered for only the countries that with serving amounts 4x's the overall average for each alcohol type then plotted using faceting by each alcohol type. 
+ 
+```{r sep_wider_ex}
+DF3 <- DF3 |>
+  separate_wider_delim(alcohol_type_of_serving, delim = "_", names = c("alcohol_type", "right")) |>
+  select(-c('right')) |>
+  filter(pct_above_avg > 4) 
+  
+ 
+head(DF3)
+
+ggplot(DF3, aes(y=country, x=serving_amount, fill=alcohol_type)) +
+  geom_col(position="dodge") +
+  facet_grid(vars(alcohol_type)) + 
+  theme(legend.position = "none")
+```
 
 # Conclusion
 
