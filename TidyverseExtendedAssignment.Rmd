@@ -1,0 +1,79 @@
+---
+title: "week 9 tidyverse/github lab - Extended"
+author: "Chi Hang(Philip) Cheung | Extended by Ariba Mandavia"
+date: "2024-11-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+```{r}
+url <- "https://raw.githubusercontent.com/stormwhale/data-mines/refs/heads/main/user_behavior_dataset.csv"
+data <- read.csv(url)
+
+```
+```{r}
+pi_gal <- data %>% 
+  filter(str_detect(Device.Model, regex("Pixel|Galaxy", ignore_case = TRUE)))
+head(pi_gal)
+
+```
+
+```{r}
+phone_gen <- data %>% 
+  mutate(Phone_generation = str_extract(Device.Model, "\\d+")) %>% 
+  select(c(Device.Model, Phone_generation))
+head(phone_gen)
+
+```
+```{r}
+phone_gen_summary <- phone_gen %>% 
+  filter(!is.na(Phone_generation)) %>% # Exclude rows with no phone generation info
+  group_by(Phone_generation) %>% 
+  count(sort = TRUE)
+
+print(phone_gen_summary)
+
+```
+```{r}
+phone_gen_summary %>% 
+  ggplot(aes(x = reorder(Phone_generation, n), y = n)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "Distribution of Phone Generations",
+    x = "Phone Generation",
+    y = "Frequency"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+keyword_summary <- data %>% 
+  mutate(keyword = case_when(
+    str_detect(Device.Model, regex("Pixel", ignore_case = TRUE)) ~ "Pixel",
+    str_detect(Device.Model, regex("Galaxy", ignore_case = TRUE)) ~ "Galaxy",
+    TRUE ~ "Other"
+  )) %>% 
+  group_by(keyword) %>% 
+  summarise(Count = n())
+
+print(keyword_summary)
+
+```
+```{r}
+keyword_summary %>% 
+  ggplot(aes(x = "", y = Count, fill = keyword)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y") +
+  labs(
+    title = "Keyword Distribution in Device Models",
+    fill = "Keyword"
+  ) +
+  theme_void()
+
+```
+
