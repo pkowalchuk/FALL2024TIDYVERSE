@@ -1,0 +1,107 @@
+---
+title: "DATA607_GITHUB CREATE"
+author: "Ying Fang Lee"
+date: "2024-12-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+### Introduction
+
+In this assignment, you’ll practice collaborating around a code project with GitHub. You could consider our collective work as building out a book of examples on how to use TidyVerse functions.
+
+Using article found on Kaggle [“which movie should I watch today?”](https://www.kaggle.com/datasets/hassanelfattmi/which-movie-should-i-watch-today?resource=download) which included 4 csv files called movies, FilmDetails, MoreInfo, and PosterPath.csv. I will use the MoreInfo file to create a sample vignette that demonstrates how to use the Tidyverse packages.
+
+#### Load data from Github
+
+```{r}
+# Load data from Kaggle as dataframe
+url <- "https://raw.githubusercontent.com/amily52131/DATA607/refs/heads/main/Final_Project/Data/MoreInfo.csv"
+MoreInfo <- read.csv(url)
+```
+
+#### From the tidyverse library we are using functions from the dplyr package
+
+##### **mutate()**
+
+The mutate function can be used two ways:
+
+1.  Create a new column in data frame based on calculations from another column
+
+2.  Update existing values in a column from data frame with logical operations
+
+```{r}
+# convert runtime to total_length by separating hours and minutes
+MoreInfo <- MoreInfo %>% 
+  mutate(hours = as.numeric(gsub("([0-9]+)h.*","\\1", runtime )),
+         minutes = as.numeric(gsub(".* ([0-9]+) min.*","\\1", runtime)),
+         total_length = hours * 60 + minutes
+        )
+
+# Update the budget and revenue column into integer 
+MoreInfo <- MoreInfo %>% 
+  mutate( budget = as.integer(gsub("[$,]","", budget)),
+          revenue = as.integer(gsub("[$,]","", revenue))
+  )
+head(MoreInfo, 5)
+```
+##### **select()**
+
+The select function lets us choose the columns based on condition or by column name
+
+```{r}
+# Only select the columns that are relevant
+MoreInfo <- MoreInfo %>% 
+  select(id, budget, revenue, total_length)
+head(MoreInfo, 5)
+```
+
+#### **filter()**
+
+The filter function lets us choose rows based on conditions
+
+```{r}
+# For this part we are removing observations where budget and revenue is NA
+MoreInfo <- MoreInfo %>% 
+  filter(!is.na(budget), !is.na(revenue))
+head(MoreInfo, 5)
+```
+
+### From the tidyverse library we are using functions from the ggplot2 package
+
+#### ggplot2 package
+
+ggplot2 is used to plot graphs and it can be integrated with other packages in the tidyverse library
+
+```{r}
+# Plotting the budgets of movies
+ggplot(data = MoreInfo, aes(x = budget)) +
+  geom_histogram(bins = 30) + 
+  scale_x_continuous(labels = function(x) x/1000000) + #scale by million
+  labs(title = "Movie Budget", x = "Budget (million)", y = "Number of Movies") +
+  theme_minimal()
+# the most common budget for movies are all less than 100 million dollars 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
