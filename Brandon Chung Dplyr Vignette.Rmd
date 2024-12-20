@@ -1,6 +1,6 @@
 ---
 title: "Brandon Chung - Vignette of Dplyr mutate, select, filter, and summarise"
-author: "Brandon Chung"
+author: "Brandon Chung | Extentended by Ying Fang Lee"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -97,3 +97,19 @@ google_data %>%
 ```
 
 ### Conclusion: The TidyVerse's Dplyr package is great at solving data manipulation challenages and for running statistical comparisons between groups of variable values.
+
+
+===============
+#### Extension by Ying Fang Lee
+Under the tidyverse package, data can be analyzed with ggplot2.
+The graph shows that the open price each day has an upward trend
+```{r}
+# convert Date column to a Date object
+google_data %>% mutate(Date = as.Date(Date))
+# Looking at the open and close of each day as a scatter plot
+ggplot(google_data) +
+  geom_point(aes(x = Date, y = Open), color = "blue")
+```
+
+
+

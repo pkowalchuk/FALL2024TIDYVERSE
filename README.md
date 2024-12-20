@@ -90,3 +90,10 @@ Ariba Mandavia:
   - A summary and visualization of phone generations extracted from `Device.Model`.
   - A keyword-based analysis and visualization of devices containing "Pixel" or "Galaxy".
 =======
+
+
+Ying Fang Lee: 
+## Extended Examples
+- Extended Brandon Chung Dplyr Vignette's example to include:
+  - ggplot to visualize the trend with a scatter plot
+=======
