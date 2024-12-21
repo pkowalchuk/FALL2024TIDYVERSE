@@ -1,6 +1,6 @@
 ---
 title: "Week 9 TidyVerse/GitHub Create Vignette"
-author: "Stephanie Chiang"
+author: "Stephanie Chiang Extended By Andreina Arias"
 output: html_document
 date: "2024-11-01"
 ---
@@ -81,3 +81,30 @@ print(head(new_names, 10))
 Per the `dplyr` documentation, `rowwise()` "allows you to compute on a data frame a row-at-a-time. This is most useful when a vectorised function doesn't exist."
 
 So when a custom function requires multiple values from the same row as input, and not just the current "cell" value, `rowwise()` can be used to apply one (or many) function(s) to a data frame easily.
+
+
+
+### Extend- AA
+
+I will would to know the maximum and minimum used name.
+
+```{r}
+Min_used_name<-new_names[which.min(new_names$total),]#find the min used name from the dataframe
+Max_used_name<-new_names[which.max(new_names$total),]#find the max used name from the dataframe
+
+cat("Least used name:", Min_used_name$name, "with total of", Min_used_name$total, "\n")#used concatenate to print the name and value, and "\n" to move the next argument to the next line.
+cat("Most used name:", Max_used_name$name, "with total of", Max_used_name$total)#used concatenate to print the name and value
+```
+
+Used arrange function from tidyverse to check my the max an min
+
+```{r}
+new_names%>% arrange(desc(total))#descending order Casey should be the first name
+```
+
+```{r}
+new_names%>% arrange(total)#ascending order Aeon should be the first name
+```
+
+I was able find the max and min used name from the data set Stephanie had tidy called "new names". I found that Aeon is the minimum used unisex name and Casey is the max used unisex name, using the "which min" and "which max" function and I checked my work using arrange to sort the names by ascending and descending total usage.
+
