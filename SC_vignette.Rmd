@@ -1,6 +1,6 @@
 ---
 title: "Week 9 TidyVerse/GitHub Create Vignette"
-author: "Stephanie Chiang"
+author: "Stephanie Chiang Extended By Andreina Arias"
 output: html_document
 date: "2024-11-01"
 ---
