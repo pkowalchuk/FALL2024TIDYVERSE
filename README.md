@@ -97,3 +97,9 @@ Ying Fang Lee:
 - Extended Brandon Chung Dplyr Vignette's example to include:
   - ggplot to visualize the trend with a scatter plot
 =======
+
+
+
+Andreina Arias
+
+Extended on Stephanie Chang code, by using tidyverse functions to find the max and min used name.
