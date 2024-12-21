@@ -1,6 +1,6 @@
 ---
 title: "week 9 tidyver/github lab"
-author: "Chi Hang(Philip) Cheung"
+author: "Chi Hang(Philip) Cheung, updatd by Inna Yedzinovich and Yanyi Li"
 date: "2024-11-07"
 output: html_document
 ---
@@ -21,6 +21,7 @@ data<- read.csv(url)
 String detect two key words: "pixel" and "galaxy".
 data is piped into filter then combined with the function of str_detect to catch the desired character pattern.
 ```{r}
+
 pi_gal<- data %>% 
   filter(str_detect(Device.Model,
                     regex("Pixel|Galaxy", ignore_case = TRUE)))
@@ -29,9 +30,31 @@ head(pi_gal)
 To use str_extract to extract only numbers from a column mixed with characters:
 "\\d+" is a regular expression for any digits
 mutate is used to create a column to store the extracted numbers
+
 ```{r}
 phone_gen<- data %>% 
   mutate(Phone_generation=str_extract(Device.Model, "\\d+")) %>% 
   select(c(Device.Model, Phone_generation))
 head(phone_gen)
 ```
+Now we extract phone generation and remove duplicates: 
+```{r}
+phone_gen <- phone_gen %>%
+  mutate(Phone_generation = str_extract(Device.Model, "\\d+")) %>%
+  group_by(Device.Model, Phone_generation) %>%
+  summarise(Duplicate_Count = n(), .groups = 'drop')
+head(phone_gen)
+
+```
+
+----------------------------------------------------------------------------------------------------------------------------
+(Extended by Yanyi Li 11/26/2024)
+
+We can use the ggplot2 package to create plots for the data frame above. One example is a bar graph for the duplicate counts.
+```{r}
+ggplot(data = phone_gen, aes(x = Device.Model, y = Duplicate_Count, fill = Device.Model)) +
+  geom_bar(stat = "identity", width = 0.7) + 
+  theme(axis.text.x = element_text(angle = 15))
+```
+
+The ggplot package is extremely useful for creating and customizing plots. In the graph above, I adjusted the bar width to 0.7 to create more space between the bars. Additionally, I assigned a different color to each bar to enhance the visual appeal. To improve the readability of long x-axis labels, I tilted them at a 15-degree angle.

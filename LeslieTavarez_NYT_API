@@ -1,0 +1,137 @@
+---
+title: "Data 607 Assignment 9 – Web APIs"
+author: "Leslie Tavarez"
+date: "2024-11-01"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+In this assignment, I will use The New York Times APIs, which provide a variety of data. First, I will sign up for an API key. Then, I’ll choose one API to work with and create an interface in R to fetch and read the JSON data from it. Finally, I will convert this data into an R DataFrame, making it easier to analyze and manipulate. This will help me learn how to work with web APIs and handle data in R.
+
+
+##### API Connection 
+```{r}
+library(httr)
+library(jsonlite)
+library(dplyr)
+library(tidyverse)
+
+
+# API Key
+apikey <- "IsXIAthPjA6e9jFJJevYb5xrlSfecGDf"
+
+# Construct the URL with the API key as a query parameter
+theURL <- paste0("https://api.nytimes.com/svc/topstories/v2/world.json?api-key=", apikey)
+
+# Make the GET request
+stories <- GET(theURL)
+
+# Check the status code
+print(stories$status_code)
+
+```
+##### Converting API into DataFrame
+```{r}
+summary(stories)
+
+#Parse data
+parsed_data <- content(stories, "text", encoding = "UTF-8")
+stories_df <- fromJSON(parsed_data)
+
+#Extract relevant parts of the data
+  articles <- stories_df$results
+  
+#Convert to DataFrame
+  articles_df <- as.data.frame(articles, stringsAsFactors = FALSE)
+  
+# Rename the byline column to author
+articles_df <- articles_df %>%
+  rename(author = byline)
+
+# Remove "By " from the author column
+articles_df$author <- gsub("^By ", "", articles_df$author)
+
+# Select and print the title and author columns
+selected_columns <- articles_df[, c("title", "author")]
+print(selected_columns)
+```
+
+Simple Analysis of Article Data
+
+1. Distribution of Article Authors: Let's see how many articles are written by each author.This will give us a list of authors along with the number of articles they have written. Andrew Higgins	and Maria Abi-Habib and Bryan Denton are the only two authors with more than one popular article. 
+
+```{r}
+# Count the number of articles by each author
+author_distribution <- articles_df %>%
+  group_by(author) %>%
+  summarise(article_count = n()) %>%
+  arrange(desc(article_count))
+
+# View the top authors and their article counts
+head(author_distribution, 10)
+
+# Create a bar plot to visualize the number of articles by author
+ggplot(author_distribution, aes(x = reorder(author, article_count), y = article_count)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +  # Flip the axes so authors' names are readable
+  labs(
+    title = "Number of Articles by Author",
+    x = "Author",
+    y = "Number of Articles"
+  ) +
+  theme_minimal()
+
+```
+
+2. Most Common Topics in Titles. This analysis will show us the most frequent words in the titles, excluding common stop words like "the", "and", "of", etc. These common words might give us an idea of the themes that appear in the articles.
+
+```{r}
+# Find the most common words in article titles
+library(tidytext)
+library(wordcloud)
+
+# Tokenize the titles into words
+title_words <- articles_df %>%
+  unnest_tokens(word, title) %>%
+  anti_join(stop_words)  # Remove common stop words (e.g., "the", "and", etc.)
+
+# Count the frequency of each word
+word_frequency <- title_words %>%
+  count(word, sort = TRUE)
+
+# View the top 10 most common words in the titles
+head(word_frequency, 10)
+
+# Create a word cloud
+wordcloud(
+  words = word_frequency$word, 
+  freq = word_frequency$n, 
+  min.freq = 2,  # Only show words that appear at least 2 times
+  scale = c(3, 0.5),  # Adjust word size range
+  colors = brewer.pal(8, "Dark2"),  # Color palette for the word cloud
+  random.order = FALSE,  # Arrange words in order of frequency
+  rot.per = 0.25  # 25% of words will be rotated
+)
+```
+3. Total Number of Articles. Let's calculate how many articles are in the dataset to get a sense of the overall coverage of the New York Times' "World" section.
+```{r}
+# Total number of articles
+total_articles <- nrow(articles_df)
+total_articles
+```
+
+4. Lets analyze title length to see if there are trends in how long article titles are.
+```{r}
+# Calculate the length of article titles (in terms of characters)
+articles_df$title_length <- nchar(articles_df$title)
+
+# Create a histogram to visualize the distribution of article title lengths
+ggplot(articles_df, aes(x = title_length)) +
+  geom_histogram(binwidth = 5, fill = "steelblue", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of Article Title Lengths",
+       x = "Title Length (Characters)", y = "Frequency") +
+  theme_minimal()
+
+```
+In this assignment, I faced challenges when attempting to create a DataFrame before properly parsing the JSON data. Parsing is essential when working with JSON because it converts the structured text into a format that R can easily manipulate. Through this process, I learned the importance of extracting relevant information from the API response and transforming it into a usable DataFrame. 
